@@ -94,4 +94,9 @@ else
     echo "Skipping cleanup as --no-rm argument is provided."
 fi
 
-echo "Installation complete! Please reboot your system."
+if [ "$no_reboot" == false ]; then
+    echo "Installation complete! Rebooting system now..."
+    sudo reboot
+else
+    echo "Installation complete! Please reboot the system manually."
+fi
