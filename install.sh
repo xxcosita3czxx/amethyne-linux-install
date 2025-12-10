@@ -35,8 +35,8 @@ echo "#                                         #"
 echo "###########################################"
 
 
-echo "\nStarting installation process...\n"
-echo "You really sure you wanna install Amethyne Linux?\n WARNING: This needs to be clean minimal archinstall (y/n)"
+echo -b "\nStarting installation process...\n"
+echo -b "You really sure you wanna install Amethyne Linux?\n WARNING: This needs to be clean minimal archinstall (y/n)"
 read confirmation
 
 if [ "$confirmation" != "y" ]; then
