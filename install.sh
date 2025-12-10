@@ -6,6 +6,15 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
+# Parse arguments
+no_rm=false
+
+for arg in "$@"; do
+    if [ "$arg" == "--no-rm" ]; then
+        no_rm=true
+    fi
+done
+
 # Check if the system is running Arch Linux
 if ! grep -q ":Arch" /etc/os-release; then
     echo "This script is intended for Arch Linux systems only. You sure you want to continue? (y/n)"
@@ -62,3 +71,27 @@ echo "Cloning Amethyne Linux repository..."
 temp=$(mktemp -d)
 git clone https://github.com/xxcosita3czxx/amethyne-linux-install.git "$temp"/amethyne-linux-install
 
+echo Installing Base Packages...
+packages_file="$temp"/amethyne-linux-install/packages.x86_64
+if [ -f "$packages_file" ]; then
+    sudo pacman -S --noconfirm - < "$packages_file"
+else
+    echo "Packages file not found! Exiting."
+    exit 1
+fi
+
+echo "Enabling services..."
+sudo systemctl enable --now NetworkManager
+
+echo "Starting sddm service..."
+sudo systemctl enable sddm
+
+# Cleaning up temporary files...
+if [ "$no_rm" == false ]; then
+    echo "Cleaning up temporary files..."
+    rm -rf "$temp"
+else
+    echo "Skipping cleanup as --no-rm argument is provided."
+fi
+
+echo "Installation complete! Please reboot your system."
