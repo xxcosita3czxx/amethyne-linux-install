@@ -16,7 +16,7 @@ for arg in "$@"; do
 done
 
 # Check if the system is running Arch Linux
-if ! grep -q ":Arch" /etc/os-release; then
+if ! grep -q "Arch" /etc/os-release; then
     echo "This script is intended for Arch Linux systems only. You sure you want to continue? (y/n)"
     read arch_confirmation
     if [ "$arch_confirmation" != "y" ]; then
