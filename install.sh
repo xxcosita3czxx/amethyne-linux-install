@@ -18,7 +18,7 @@ done
 # Check if the system is running Arch Linux
 if ! grep -q "Arch" /etc/os-release; then
     echo "This script is intended for Arch Linux systems only. You sure you want to continue? (y/n)"
-    read arch_confirmation
+    read -r arch_confirmation
     if [ "$arch_confirmation" != "y" ]; then
         echo "Exiting."
         exit 1
@@ -36,7 +36,7 @@ echo "###########################################"
 
 echo -e "\nStarting installation process...\n"
 echo -e "You really sure you wanna install Amethyne Linux?\n WARNING: This needs to be clean minimal archinstall (y/n)"
-read confirmation
+read -r confirmation
 
 if [ "$confirmation" != "y" ]; then
     echo "Installation aborted."
@@ -45,6 +45,8 @@ fi
 
 echo "Updating system packages..."
 sudo pacman -Syu --noconfirm
+
+## DEPENDENCIES ##
 
 echo "Checking necessary dependencies..."
 if $(git --version) &> /dev/null; then
