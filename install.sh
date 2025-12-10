@@ -51,18 +51,6 @@ else
     echo "Git is not installed. Installing Git..."
     sudo pacman -S git --noconfirm
 fi
-if $(curl --version) &> /dev/null; then
-    echo "Curl is already installed."
-else
-    echo "Curl is not installed. Installing Curl..."
-    sudo pacman -S curl --noconfirm
-fi
-if $(wget --version) &> /dev/null; then
-    echo "Wget is already installed."
-else
-    echo "Wget is not installed. Installing Wget..."
-    sudo pacman -S wget --noconfirm
-fi
 
 echo "Cloning Amethyne Linux repository..."
 temp=$(mktemp -d)
