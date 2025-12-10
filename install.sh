@@ -34,9 +34,8 @@ echo "#           Installation Script           #"
 echo "#                                         #"
 echo "###########################################"
 
-
-echo -b "\nStarting installation process...\n"
-echo -b "You really sure you wanna install Amethyne Linux?\n WARNING: This needs to be clean minimal archinstall (y/n)"
+echo -e "\nStarting installation process...\n"
+echo -e "You really sure you wanna install Amethyne Linux?\n WARNING: This needs to be clean minimal archinstall (y/n)"
 read confirmation
 
 if [ "$confirmation" != "y" ]; then
@@ -71,7 +70,7 @@ echo "Cloning Amethyne Linux repository..."
 temp=$(mktemp -d)
 git clone https://github.com/xxcosita3czxx/amethyne-linux-install.git "$temp"/amethyne-linux-install
 
-echo Installing Base Packages...
+echo "Installing Base Packages..."
 packages_file="$temp"/amethyne-linux-install/packages.x86_64
 if [ -f "$packages_file" ]; then
     sudo pacman -S --noconfirm - < "$packages_file"
