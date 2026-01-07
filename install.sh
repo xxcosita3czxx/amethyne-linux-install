@@ -57,7 +57,7 @@ temp=$(mktemp -d)
 git clone https://github.com/xxcosita3czxx/amethyne-linux-install.git "$temp"/amethyne-linux-install
 
 echo "Installing Base Packages..."
-packages_file="$temp"/amethyne-linux-install/packages.x86_64
+packages_file="$temp"/amethyne-linux-install/base.x86_64
 if [ -f "$packages_file" ]; then
     sudo pacman -S --noconfirm - < "$packages_file"
 else
@@ -65,11 +65,36 @@ else
     exit 1
 fi
 
-echo "Enabling services..."
-sudo systemctl enable --now NetworkManager
+echo "Installing AUR packages helper (yay)..."
+if ! command -v yay &> /dev/null; then
+    git clone https://aur.archlinux.org/yay.git "$temp"/yay
+    cd "$temp"/yay
+    makepkg -si --noconfirm
+    cd -
+else
+    echo "yay is already installed."
+fi
 
-echo "Starting sddm service..."
-sudo systemctl enable sddm
+
+echo "Installing Applications..."
+apps_file="$temp"/amethyne-linux-install/apps.x86_64
+if [ -f "$apps_file" ]; then
+    sudo pacman -S --noconfirm - < "$apps_file"
+else
+    echo "Applications file not found! Skipping application installation."
+fi
+
+# for each service in services.x86_64, enable it
+echo "Enabling Services..."
+services_file="$temp"/amethyne-linux-install/services.x86_64
+if [ -f "$services_file" ]; then
+    while IFS= read -r service; do
+        echo "Enabling service: $service"
+        sudo systemctl enable $service
+    done < "$services_file"
+else
+    echo "Services file not found! Skipping service enabling."
+fi
 
 # Cleaning up temporary files...
 if [ "$no_rm" == false ]; then
